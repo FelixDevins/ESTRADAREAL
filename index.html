@@ -2,220 +2,237 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EstradaLivre - Controle de Gastos</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>EstradaLivre - Mobile</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-        body { font-family: 'Inter', sans-serif; }
-        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
-        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f1f1; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #888; border-radius: 10px; }
+        body { 
+            font-family: 'Inter', sans-serif; 
+            -webkit-tap-highlight-color: transparent;
+        }
+        /* Ajuste para não cortar conteúdo por causa do menu inferior no mobile */
+        @media (max-width: 768px) {
+            main { padding-bottom: 80px; }
+        }
+        .nav-active {
+            color: #fb923c !important; /* orange-400 */
+            border-top: 2px solid #fb923c;
+        }
+        @media (min-width: 769px) {
+            .nav-active {
+                background-color: #1e293b !important;
+                border-top: none;
+                border-left: 4px solid #fb923c;
+            }
+        }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-900 min-h-screen">
+<body class="bg-gray-50 text-gray-900 min-h-screen flex flex-col md:flex-row">
 
-    <!-- Navegação Lateral -->
-    <div class="flex h-screen overflow-hidden">
-        <aside class="w-64 bg-slate-900 text-white flex-shrink-0 hidden md:flex flex-col">
-            <div class="p-6 text-2xl font-bold border-b border-slate-800 flex items-center gap-2">
-                <i data-lucide="truck" class="text-orange-400"></i>
-                <span>EstradaLivre</span>
-            </div>
-            <nav class="flex-1 p-4 space-y-2">
-                <button onclick="showSection('dashboard')" class="nav-btn w-full flex items-center gap-3 p-3 rounded-lg hover:bg-slate-800 transition-colors bg-slate-800" id="btn-dashboard">
-                    <i data-lucide="layout-dashboard"></i> Dashboard
-                </button>
-                <button onclick="showSection('pedagios')" class="nav-btn w-full flex items-center gap-3 p-3 rounded-lg hover:bg-slate-800 transition-colors" id="btn-pedagios">
-                    <i data-lucide="map-pin"></i> Pedágios
-                </button>
-                <button onclick="showSection('gastos')" class="nav-btn w-full flex items-center gap-3 p-3 rounded-lg hover:bg-slate-800 transition-colors" id="btn-gastos">
-                    <i data-lucide="receipt"></i> Outros Gastos
-                </button>
-                <button onclick="showSection('fretes')" class="nav-btn w-full flex items-center gap-3 p-3 rounded-lg hover:bg-slate-800 transition-colors" id="btn-fretes">
-                    <i data-lucide="trending-up"></i> Fretes
-                </button>
-                <button onclick="showSection('relatorio')" class="nav-btn w-full flex items-center gap-3 p-3 rounded-lg hover:bg-slate-800 transition-colors" id="btn-relatorio">
-                    <i data-lucide="file-text"></i> Relatório Final
-                </button>
-            </nav>
-        </aside>
+    <!-- Navegação Lateral (Desktop) / Inferior (Mobile) -->
+    <aside class="fixed bottom-0 left-0 w-full bg-slate-900 text-white z-50 md:relative md:w-64 md:h-screen flex flex-row md:flex-col border-t border-slate-800 md:border-t-0">
+        <div class="hidden md:flex p-6 text-2xl font-bold border-b border-slate-800 items-center gap-2">
+            <i data-lucide="truck" class="text-orange-400"></i>
+            <span>EstradaLivre</span>
+        </div>
+        
+        <nav class="flex flex-row md:flex-col flex-1 justify-around md:justify-start p-2 md:p-4 md:space-y-2">
+            <button onclick="showSection('dashboard')" id="btn-dashboard" class="nav-btn flex flex-col md:flex-row items-center gap-1 md:gap-3 p-2 md:p-3 rounded-lg transition-colors text-gray-400 md:text-white nav-active">
+                <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+                <span class="text-[10px] md:text-base">Início</span>
+            </button>
+            <button onclick="showSection('pedagios')" id="btn-pedagios" class="nav-btn flex flex-col md:flex-row items-center gap-1 md:gap-3 p-2 md:p-3 rounded-lg transition-colors text-gray-400 md:text-white">
+                <i data-lucide="map-pin" class="w-5 h-5"></i>
+                <span class="text-[10px] md:text-base">Pedágio</span>
+            </button>
+            <button onclick="showSection('gastos')" id="btn-gastos" class="nav-btn flex flex-col md:flex-row items-center gap-1 md:gap-3 p-2 md:p-3 rounded-lg transition-colors text-gray-400 md:text-white">
+                <i data-lucide="receipt" class="w-5 h-5"></i>
+                <span class="text-[10px] md:text-base">Gastos</span>
+            </button>
+            <button onclick="showSection('fretes')" id="btn-fretes" class="nav-btn flex flex-col md:flex-row items-center gap-1 md:gap-3 p-2 md:p-3 rounded-lg transition-colors text-gray-400 md:text-white">
+                <i data-lucide="trending-up" class="w-5 h-5"></i>
+                <span class="text-[10px] md:text-base">Fretes</span>
+            </button>
+            <button onclick="showSection('relatorio')" id="btn-relatorio" class="nav-btn flex flex-col md:flex-row items-center gap-1 md:gap-3 p-2 md:p-3 rounded-lg transition-colors text-gray-400 md:text-white">
+                <i data-lucide="file-text" class="w-5 h-5"></i>
+                <span class="text-[10px] md:text-base">Lista</span>
+            </button>
+        </nav>
+    </aside>
 
-        <!-- Conteúdo Principal -->
-        <main class="flex-1 overflow-y-auto p-4 md:p-8 custom-scrollbar">
+    <!-- Conteúdo Principal -->
+    <main class="flex-1 overflow-y-auto p-4 md:p-8">
+        
+        <!-- Dashboard Section -->
+        <section id="section-dashboard" class="space-y-6">
+            <header class="md:hidden flex items-center gap-2 mb-4">
+                <i data-lucide="truck" class="text-orange-500 w-6 h-6"></i>
+                <h1 class="text-xl font-bold italic">EstradaLivre</h1>
+            </header>
+
+            <h2 class="text-2xl font-bold md:text-3xl">Resumo do Mês</h2>
             
-            <!-- Dashboard Section -->
-            <section id="section-dashboard" class="space-y-6">
-                <h1 class="text-3xl font-bold">Resumo da Viagem</h1>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-                        <p class="text-sm text-gray-500 uppercase font-semibold">Total Bruto (Fretes)</p>
-                        <h2 class="text-3xl font-bold text-blue-600" id="dash-total-frete">R$ 0,00</h2>
-                    </div>
-                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-                        <p class="text-sm text-gray-500 uppercase font-semibold">Total Despesas</p>
-                        <h2 class="text-3xl font-bold text-red-600" id="dash-total-gastos">R$ 0,00</h2>
-                    </div>
-                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-                        <p class="text-sm text-gray-500 uppercase font-semibold">Saldo Líquido</p>
-                        <h2 class="text-3xl font-bold" id="dash-saldo-liquido">R$ 0,00</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div class="bg-blue-600 text-white p-5 rounded-2xl shadow-lg">
+                    <p class="text-xs opacity-80 uppercase font-bold tracking-wider">Total Fretes</p>
+                    <h2 class="text-2xl font-black mt-1" id="dash-total-frete">R$ 0,00</h2>
+                </div>
+                <div class="bg-red-500 text-white p-5 rounded-2xl shadow-lg">
+                    <p class="text-xs opacity-80 uppercase font-bold tracking-wider">Total Despesas</p>
+                    <h2 class="text-2xl font-black mt-1" id="dash-total-gastos">R$ 0,00</h2>
+                </div>
+                <div class="bg-white p-5 rounded-2xl shadow-md border border-gray-100 sm:col-span-2 lg:col-span-1">
+                    <p class="text-xs text-gray-400 uppercase font-bold tracking-wider">Lucro Líquido</p>
+                    <h2 class="text-2xl font-black mt-1 text-slate-800" id="dash-saldo-liquido">R$ 0,00</h2>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-200">
+                    <h3 class="font-bold mb-4 flex items-center gap-2">
+                        <i data-lucide="pie-chart" class="w-4 h-4 text-orange-500"></i> Gastos por Tipo
+                    </h3>
+                    <div class="space-y-4" id="dash-resumo-categorias">
+                        <!-- JS -->
                     </div>
                 </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-                        <h2 class="text-xl font-bold mb-4">Divisão de Gastos</h2>
-                        <div class="space-y-3" id="dash-resumo-categorias">
-                            <!-- Gerado via JS -->
-                        </div>
-                    </div>
-                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-                        <h2 class="text-xl font-bold mb-4">Resumo de Pedágios</h2>
-                        <div class="text-center py-8">
-                            <p class="text-gray-500 text-sm">Total gasto em praças de pedágio:</p>
-                            <h3 class="text-4xl font-black text-slate-800 mt-2" id="dash-total-pedagio-sozinho">R$ 0,00</h3>
-                            <p class="text-xs text-gray-400 mt-2" id="dash-count-pedagio">0 passagens registadas</p>
-                        </div>
-                    </div>
+                <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-200 flex flex-col justify-center items-center text-center">
+                    <i data-lucide="map-pin" class="w-8 h-8 text-blue-500 mb-2"></i>
+                    <p class="text-sm text-gray-500">Total em Pedágios</p>
+                    <h3 class="text-3xl font-black text-slate-800" id="dash-total-pedagio-sozinho">R$ 0,00</h3>
+                    <span class="text-[10px] bg-blue-50 text-blue-600 px-2 py-1 rounded-full mt-2 font-bold uppercase" id="dash-count-pedagio">0 Passagens</span>
                 </div>
-            </section>
+            </div>
+        </section>
 
-            <!-- ABA EXCLUSIVA DE PEDÁGIOS -->
-            <section id="section-pedagios" class="hidden space-y-6">
-                <h1 class="text-3xl font-bold">Controlo de Pedágios</h1>
-                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 max-w-2xl">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div class="md:col-span-2">
-                            <label class="block text-sm font-medium mb-1">Local da Praça / Rodovia</label>
-                            <input type="text" id="ped-desc" placeholder="Ex: Praça de Itatiaia - Rod. Pres. Dutra" class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 outline-none">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium mb-1">Qtd. de Eixos</label>
-                            <select id="ped-eixos" class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 outline-none">
-                                <option value="2">2 Eixos (Simples)</option>
-                                <option value="3">3 Eixos</option>
-                                <option value="4">4 Eixos</option>
-                                <option value="5">5 Eixos</option>
-                                <option value="6">6 Eixos</option>
-                                <option value="7">7 Eixos</option>
-                                <option value="9">9 Eixos</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium mb-1">Valor Unitário (R$)</label>
-                            <input type="number" id="ped-valor" step="0.01" class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 outline-none">
-                        </div>
-                        <button onclick="adicionarPedagio()" class="md:col-span-2 bg-slate-900 text-white py-3 rounded-lg hover:bg-slate-800 transition-colors flex justify-center items-center gap-2 font-bold uppercase tracking-wider">
-                            <i data-lucide="map-pin"></i> Registar Passagem
-                        </button>
+        <!-- ABA PEDÁGIOS -->
+        <section id="section-pedagios" class="hidden space-y-4">
+            <h2 class="text-2xl font-bold">Novo Pedágio</h2>
+            <div class="bg-white p-5 rounded-2xl shadow-md border border-gray-200 space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Local da Praça</label>
+                    <input type="text" id="ped-desc" placeholder="Ex: BR-116 Km 200" class="w-full p-4 bg-gray-50 border-none rounded-xl focus:ring-2 focus:ring-orange-500 outline-none text-lg">
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Eixos</label>
+                        <select id="ped-eixos" class="w-full p-4 bg-gray-50 border-none rounded-xl outline-none text-lg">
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="9">9</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Valor (R$)</label>
+                        <input type="number" id="ped-valor" step="0.01" placeholder="0,00" class="w-full p-4 bg-gray-50 border-none rounded-xl outline-none text-lg">
                     </div>
                 </div>
-            </section>
+                <button onclick="adicionarPedagio()" class="w-full bg-slate-900 text-white py-4 rounded-xl font-bold text-lg shadow-lg active:scale-95 transition-transform flex justify-center items-center gap-2">
+                    <i data-lucide="check-circle"></i> SALVAR
+                </button>
+            </div>
+        </section>
 
-            <!-- Registro de Gastos Gerais -->
-            <section id="section-gastos" class="hidden space-y-6">
-                <h1 class="text-3xl font-bold">Outros Gastos Operacionais</h1>
-                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 max-w-2xl">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div class="md:col-span-2">
-                            <label class="block text-sm font-medium mb-1">Descrição do Gasto</label>
-                            <input type="text" id="gasto-desc" placeholder="Ex: Posto Ipiranga - Diesel S10" class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 outline-none">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium mb-1">Categoria</label>
-                            <select id="gasto-categoria" class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 outline-none">
-                                <option value="Diesel">Diesel</option>
-                                <option value="Alimentação">Alimentação</option>
-                                <option value="Manutenção">Manutenção</option>
-                                <option value="Estacionamento">Estacionamento / Pernoite</option>
-                                <option value="Outros">Outros</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium mb-1">Valor (R$)</label>
-                            <input type="number" id="gasto-valor" step="0.01" class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 outline-none">
-                        </div>
-                        <button onclick="adicionarGasto()" class="md:col-span-2 bg-slate-700 text-white py-3 rounded-lg hover:bg-slate-600 transition-colors flex justify-center items-center gap-2 font-bold">
-                            <i data-lucide="plus-circle"></i> SALVAR DESPESA
-                        </button>
+        <!-- ABA GASTOS -->
+        <section id="section-gastos" class="hidden space-y-4">
+            <h2 class="text-2xl font-bold">Outros Gastos</h2>
+            <div class="bg-white p-5 rounded-2xl shadow-md border border-gray-200 space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-gray-400 uppercase mb-1">O que comprou?</label>
+                    <input type="text" id="gasto-desc" placeholder="Ex: Diesel, Almoço..." class="w-full p-4 bg-gray-50 border-none rounded-xl outline-none text-lg">
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Categoria</label>
+                        <select id="gasto-categoria" class="w-full p-4 bg-gray-50 border-none rounded-xl outline-none">
+                            <option value="Diesel">Diesel</option>
+                            <option value="Alimentação">Alimentação</option>
+                            <option value="Manutenção">Manutenção</option>
+                            <option value="Outros">Outros</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Valor (R$)</label>
+                        <input type="number" id="gasto-valor" step="0.01" placeholder="0,00" class="w-full p-4 bg-gray-50 border-none rounded-xl outline-none text-lg">
                     </div>
                 </div>
-            </section>
+                <button onclick="adicionarGasto()" class="w-full bg-orange-500 text-white py-4 rounded-xl font-bold text-lg shadow-lg active:scale-95 transition-transform">
+                    REGISTRAR GASTO
+                </button>
+            </div>
+        </section>
 
-            <!-- Registro de Fretes -->
-            <section id="section-fretes" class="hidden space-y-6">
-                <h1 class="text-3xl font-bold">Registo de Fretes</h1>
-                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 max-w-2xl">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div class="md:col-span-2">
-                            <label class="block text-sm font-medium mb-1">Rota (Origem -> Destino)</label>
-                            <input type="text" id="frete-desc" placeholder="Ex: Paranaguá -> Curitiba (Soja)" class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 outline-none">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium mb-1">Valor do Frete (R$)</label>
-                            <input type="number" id="frete-valor" step="0.01" class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 outline-none">
-                        </div>
-                        <button onclick="adicionarFrete()" class="bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition-colors flex justify-center items-center gap-2 font-bold mt-6">
-                            <i data-lucide="plus"></i> REGISTRAR FRETE
-                        </button>
-                    </div>
-                </div>
-            </section>
+        <!-- ABA FRETES -->
+        <section id="section-fretes" class="hidden space-y-4">
+            <h2 class="text-2xl font-bold">Entrada de Frete</h2>
+            <div class="bg-white p-5 rounded-2xl shadow-md border border-gray-200 space-y-4">
+                <input type="text" id="frete-desc" placeholder="Rota: Origem -> Destino" class="w-full p-4 bg-gray-50 border-none rounded-xl outline-none text-lg">
+                <input type="number" id="frete-valor" step="0.01" placeholder="Valor Bruto R$" class="w-full p-4 bg-gray-50 border-none rounded-xl outline-none text-lg">
+                <button onclick="adicionarFrete()" class="w-full bg-green-600 text-white py-4 rounded-xl font-bold text-lg shadow-lg active:scale-95 transition-transform">
+                    REGISTRAR FRETE
+                </button>
+            </div>
+        </section>
 
-            <!-- Relatorio Section -->
-            <section id="section-relatorio" class="hidden space-y-6">
-                <h1 class="text-3xl font-bold">Histórico Geral</h1>
-                <div class="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-200">
-                    <table class="w-full text-left">
-                        <thead class="bg-gray-50 border-b border-gray-200">
-                            <tr>
-                                <th class="p-4 font-semibold text-xs uppercase text-gray-500">Data</th>
-                                <th class="p-4 font-semibold text-xs uppercase text-gray-500">Categoria</th>
-                                <th class="p-4 font-semibold text-xs uppercase text-gray-500">Descrição</th>
-                                <th class="p-4 font-semibold text-xs uppercase text-gray-500 text-right">Valor</th>
-                                <th class="p-4 font-semibold text-xs uppercase text-gray-500 text-center">Ações</th>
-                            </tr>
-                        </thead>
-                        <tbody id="lista-movimentacoes">
-                            <!-- Inserido via JS -->
-                        </tbody>
-                    </table>
-                </div>
-            </section>
+        <!-- ABA LISTA/RELATORIO (Responsiva para Mobile) -->
+        <section id="section-relatorio" class="hidden space-y-4">
+            <h2 class="text-2xl font-bold">Histórico</h2>
+            
+            <!-- Desktop Table -->
+            <div class="hidden md:block bg-white rounded-2xl shadow-md overflow-hidden border border-gray-200">
+                <table class="w-full text-left">
+                    <thead class="bg-gray-50 border-b">
+                        <tr>
+                            <th class="p-4 text-xs font-bold uppercase text-gray-400">Data</th>
+                            <th class="p-4 text-xs font-bold uppercase text-gray-400">Tipo</th>
+                            <th class="p-4 text-xs font-bold uppercase text-gray-400">Descrição</th>
+                            <th class="p-4 text-xs font-bold uppercase text-gray-400 text-right">Valor</th>
+                            <th class="p-4"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="lista-movimentacoes-desktop"></tbody>
+                </table>
+            </div>
 
-        </main>
-    </div>
+            <!-- Mobile List (Cards) -->
+            <div id="lista-movimentacoes-mobile" class="md:hidden space-y-3">
+                <!-- JS gera cards aqui -->
+            </div>
+        </section>
+
+    </main>
 
     <script>
-        // Estado da Aplicação
-        let movimentacoes = []; 
+        let movimentacoes = [];
 
-        // Inicialização
         document.addEventListener('DOMContentLoaded', () => {
             lucide.createIcons();
             atualizarInterface();
         });
 
-        // Navegação entre abas
         function showSection(sectionId) {
             document.querySelectorAll('main > section').forEach(s => s.classList.add('hidden'));
             document.getElementById(`section-${sectionId}`).classList.remove('hidden');
             
-            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('bg-slate-800'));
-            document.getElementById(`btn-${sectionId}`).classList.add('bg-slate-800');
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('nav-active', 'text-orange-400'));
+            const activeBtn = document.getElementById(`btn-${sectionId}`);
+            activeBtn.classList.add('nav-active');
+            
+            window.scrollTo(0,0);
         }
 
-        // Lógica de Pedágios (Aba Nova)
         function adicionarPedagio() {
             const desc = document.getElementById('ped-desc').value;
             const eixos = document.getElementById('ped-eixos').value;
             const valor = parseFloat(document.getElementById('ped-valor').value);
 
-            if (!desc || isNaN(valor)) {
-                showToast("Preencha o local e o valor do pedágio.");
-                return;
-            }
+            if (!desc || isNaN(valor)) return showToast("Dados incompletos");
 
             movimentacoes.push({
                 id: Date.now(),
@@ -226,159 +243,111 @@
                 valor: valor
             });
 
-            document.getElementById('ped-desc').value = '';
-            document.getElementById('ped-valor').value = '';
-            
+            limparCamposPedagio();
             atualizarInterface();
-            showToast("Pedágio registado!");
+            showToast("Pedágio salvo!");
         }
 
-        // Lógica de Gastos Gerais
         function adicionarGasto() {
             const desc = document.getElementById('gasto-desc').value;
             const cat = document.getElementById('gasto-categoria').value;
             const valor = parseFloat(document.getElementById('gasto-valor').value);
 
-            if (!desc || isNaN(valor)) {
-                showToast("Preencha a descrição e o valor.");
-                return;
-            }
+            if (!desc || isNaN(valor)) return showToast("Dados incompletos");
 
-            movimentacoes.push({
-                id: Date.now(),
-                data: new Date().toLocaleDateString('pt-BR'),
-                tipo: 'gasto',
-                categoria: cat,
-                desc: desc,
-                valor: valor
-            });
-
-            document.getElementById('gasto-desc').value = '';
-            document.getElementById('gasto-valor').value = '';
-            
+            movimentacoes.push({ id: Date.now(), data: new Date().toLocaleDateString('pt-BR'), tipo: 'gasto', categoria: cat, desc, valor });
+            limparCamposGasto();
             atualizarInterface();
-            showToast("Gasto registado!");
+            showToast("Gasto salvo!");
         }
 
-        // Lógica de Fretes
         function adicionarFrete() {
             const desc = document.getElementById('frete-desc').value;
             const valor = parseFloat(document.getElementById('frete-valor').value);
 
-            if (!desc || isNaN(valor)) {
-                showToast("Preencha a descrição do frete.");
-                return;
-            }
+            if (!desc || isNaN(valor)) return showToast("Dados incompletos");
 
-            movimentacoes.push({
-                id: Date.now(),
-                data: new Date().toLocaleDateString('pt-BR'),
-                tipo: 'frete',
-                categoria: 'Frete',
-                desc: desc,
-                valor: valor
-            });
-
-            document.getElementById('frete-desc').value = '';
-            document.getElementById('frete-valor').value = '';
-
+            movimentacoes.push({ id: Date.now(), data: new Date().toLocaleDateString('pt-BR'), tipo: 'frete', categoria: 'Frete', desc, valor });
+            limparCamposFrete();
             atualizarInterface();
-            showToast("Frete registado!");
+            showToast("Frete salvo!");
         }
 
-        function deletarMovimentacao(id) {
+        function deletar(id) {
             movimentacoes = movimentacoes.filter(m => m.id !== id);
             atualizarInterface();
         }
 
-        // Atualização da UI
         function atualizarInterface() {
             const totalFrete = movimentacoes.filter(m => m.tipo === 'frete').reduce((s, m) => s + m.valor, 0);
             const totalGastos = movimentacoes.filter(m => m.tipo === 'gasto').reduce((s, m) => s + m.valor, 0);
             const totalPedagio = movimentacoes.filter(m => m.categoria === 'Pedágio').reduce((s, m) => s + m.valor, 0);
-            const countPedagio = movimentacoes.filter(m => m.categoria === 'Pedágio').length;
             const saldo = totalFrete - totalGastos;
 
             document.getElementById('dash-total-frete').innerText = formatarMoeda(totalFrete);
             document.getElementById('dash-total-gastos').innerText = formatarMoeda(totalGastos);
             document.getElementById('dash-total-pedagio-sozinho').innerText = formatarMoeda(totalPedagio);
-            document.getElementById('dash-count-pedagio').innerText = `${countPedagio} passagens registadas`;
+            document.getElementById('dash-count-pedagio').innerText = `${movimentacoes.filter(m => m.categoria === 'Pedágio').length} Passagens`;
+            document.getElementById('dash-saldo-liquido').innerText = formatarMoeda(saldo);
+
+            // Resumo Categorias
+            const cats = {};
+            movimentacoes.filter(m => m.tipo === 'gasto').forEach(m => cats[m.categoria] = (cats[m.categoria] || 0) + m.valor);
             
-            const saldoElem = document.getElementById('dash-saldo-liquido');
-            saldoElem.innerText = formatarMoeda(saldo);
-            saldoElem.className = `text-3xl font-bold ${saldo >= 0 ? 'text-green-600' : 'text-red-600'}`;
+            document.getElementById('dash-resumo-categorias').innerHTML = Object.entries(cats).map(([c, v]) => `
+                <div class="flex justify-between items-center">
+                    <span class="text-sm font-medium text-gray-600">${c}</span>
+                    <span class="text-sm font-bold">${formatarMoeda(v)}</span>
+                </div>
+            `).join('') || '<p class="text-xs text-gray-400 italic">Sem registos</p>';
 
-            // Resumo por Categorias no Dashboard
-            const categoriasResumo = {};
-            movimentacoes.filter(m => m.tipo === 'gasto').forEach(m => {
-                categoriasResumo[m.categoria] = (categoriasResumo[m.categoria] || 0) + m.valor;
-            });
-
-            const resumoHtml = Object.entries(categoriasResumo).map(([cat, val]) => {
-                const perc = totalGastos > 0 ? (val / totalGastos * 100).toFixed(0) : 0;
-                return `
-                    <div class="space-y-1">
-                        <div class="flex justify-between text-sm">
-                            <span class="font-medium">${cat}</span>
-                            <span class="text-gray-500">${formatarMoeda(val)} (${perc}%)</span>
-                        </div>
-                        <div class="w-full bg-gray-100 h-2 rounded-full overflow-hidden">
-                            <div class="bg-orange-500 h-full" style="width: ${perc}%"></div>
-                        </div>
-                    </div>
-                `;
-            }).join('') || '<p class="text-gray-400 italic">Sem gastos registados.</p>';
+            // Listagem Desktop e Mobile
+            const sorted = movimentacoes.slice().reverse();
             
-            document.getElementById('dash-resumo-categorias').innerHTML = resumoHtml;
-
-            // Tabela de Histórico
-            const listaMov = document.getElementById('lista-movimentacoes');
-            listaMov.innerHTML = movimentacoes.slice().reverse().map(m => `
-                <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
-                    <td class="p-4 text-sm text-gray-500">${m.data}</td>
-                    <td class="p-4">
-                        <span class="px-2 py-1 rounded-md text-[10px] font-bold tracking-wider uppercase ${
-                            m.tipo === 'frete' ? 'bg-green-100 text-green-700' : 
-                            m.categoria === 'Pedágio' ? 'bg-blue-100 text-blue-700' : 'bg-orange-100 text-orange-700'
-                        }">
-                            ${m.categoria}
-                        </span>
-                    </td>
-                    <td class="p-4 font-medium text-slate-700">${m.desc}</td>
-                    <td class="p-4 text-right font-bold ${m.tipo === 'frete' ? 'text-green-600' : 'text-slate-900'}">
-                        ${m.tipo === 'frete' ? '+' : '-'} ${formatarMoeda(m.valor)}
-                    </td>
-                    <td class="p-4 text-center">
-                        <button onclick="deletarMovimentacao(${m.id})" class="text-gray-300 hover:text-red-500 transition-colors">
-                             <i data-lucide="trash-2" class="w-4 h-4 mx-auto"></i>
-                        </button>
-                    </td>
+            // Desktop
+            document.getElementById('lista-movimentacoes-desktop').innerHTML = sorted.map(m => `
+                <tr class="border-b last:border-0">
+                    <td class="p-4 text-sm">${m.data}</td>
+                    <td class="p-4 text-xs font-bold uppercase ${m.tipo === 'frete' ? 'text-green-600' : 'text-orange-500'}">${m.categoria}</td>
+                    <td class="p-4 text-sm font-medium">${m.desc}</td>
+                    <td class="p-4 text-right font-bold">${formatarMoeda(m.valor)}</td>
+                    <td class="p-4 text-right"><button onclick="deletar(${m.id})" class="text-red-400 hover:text-red-600"><i data-lucide="trash-2" class="w-4 h-4"></i></button></td>
                 </tr>
-            `).join('') || '<tr><td colspan="5" class="p-8 text-center text-gray-400 italic">Nenhuma movimentação para exibir.</td></tr>';
+            `).join('');
+
+            // Mobile Cards
+            document.getElementById('lista-movimentacoes-mobile').innerHTML = sorted.map(m => `
+                <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex justify-between items-center">
+                    <div class="space-y-1">
+                        <div class="flex items-center gap-2">
+                            <span class="text-[10px] font-black uppercase px-2 py-0.5 rounded ${m.tipo === 'frete' ? 'bg-green-100 text-green-700' : 'bg-orange-100 text-orange-700'}">${m.categoria}</span>
+                            <span class="text-[10px] text-gray-400">${m.data}</span>
+                        </div>
+                        <p class="text-sm font-bold text-slate-700">${m.desc}</p>
+                    </div>
+                    <div class="flex flex-col items-end gap-2">
+                        <span class="font-black ${m.tipo === 'frete' ? 'text-green-600' : 'text-slate-800'}">${formatarMoeda(m.valor)}</span>
+                        <button onclick="deletar(${m.id})" class="text-red-400 p-1"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                    </div>
+                </div>
+            `).join('') || '<p class="text-center py-10 text-gray-400">Lista vazia</p>';
 
             lucide.createIcons();
         }
 
-        // Helpers
-        function formatarMoeda(valor) {
-            return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        function formatarMoeda(v) { return v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }); }
+        
+        function showToast(m) {
+            const t = document.createElement('div');
+            t.className = 'fixed top-4 left-1/2 -translate-x-1/2 bg-slate-800 text-white px-6 py-3 rounded-full text-sm font-bold shadow-xl z-[100] animate-bounce';
+            t.innerText = m;
+            document.body.appendChild(t);
+            setTimeout(() => t.remove(), 2500);
         }
 
-        function showToast(msg) {
-            const toast = document.createElement('div');
-            toast.className = 'fixed bottom-8 left-1/2 -translate-x-1/2 bg-slate-900 text-white px-6 py-3 rounded-full shadow-2xl z-[100] transition-all transform scale-90 opacity-0';
-            toast.innerText = msg;
-            document.body.appendChild(toast);
-            
-            setTimeout(() => {
-                toast.classList.remove('scale-90', 'opacity-0');
-            }, 10);
-
-            setTimeout(() => {
-                toast.classList.add('scale-90', 'opacity-0');
-                setTimeout(() => toast.remove(), 300);
-            }, 3000);
-        }
+        function limparCamposPedagio() { document.getElementById('ped-desc').value = ''; document.getElementById('ped-valor').value = ''; }
+        function limparCamposGasto() { document.getElementById('gasto-desc').value = ''; document.getElementById('gasto-valor').value = ''; }
+        function limparCamposFrete() { document.getElementById('frete-desc').value = ''; document.getElementById('frete-valor').value = ''; }
     </script>
 </body>
 </html>
